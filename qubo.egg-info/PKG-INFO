@@ -1,0 +1,99 @@
+Metadata-Version: 2.4
+Name: qubo
+Version: 0.1.0
+Summary: Lightweight quantum development toolkit for Python developers.
+Author: Your Name
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy>=2.0
+Requires-Dist: matplotlib
+Requires-Dist: PyQt5
+Requires-Dist: click
+Dynamic: author
+Dynamic: license-file
+
+# Qubo — Quantum Development Toolkit
+
+Qubo is a lightweight Python quantum development toolkit for building, simulating, and visualizing quantum circuits locally.
+
+## What’s included
+
+- `QuantumCircuit` builder API for Python developers
+- Modular gate factories in `qubo.gates`
+- `StatevectorSimulator` and `DensityMatrixSimulator`
+- Realistic noise models: bit-flip, phase-flip, depolarizing, amplitude damping
+- Interactive GUI with live simulation and probability visualization
+- CLI runner for script workflows
+- Package entrypoint support via `python -m qubo`
+
+## Installation
+
+```bash
+cd /Users/amitchauhanaiicloud.com/Downloads/qubo-main/qubo
+python -m pip install -r requirements.txt
+```
+
+## Run the GUI
+
+```bash
+python gui.py
+```
+
+## Run the CLI
+
+```bash
+python -m qubo.cli example_circuit.py --shots 1024 --json
+```
+
+## Advanced CLI usage
+
+- Select density matrix simulation:
+
+```bash
+python -m qubo.cli example_circuit.py --simulator density --shots 1024 --json
+```
+
+- Add noise to statevector simulation:
+
+```bash
+python -m qubo.cli example_circuit.py --noise depolarizing --noise-prob 0.05
+```
+
+## Developer API
+
+Import the package directly:
+
+```python
+from qubo import QuantumCircuit, StatevectorSimulator, DensityMatrixSimulator
+```
+
+Build a circuit:
+
+```python
+from qubo.circuit import QuantumCircuit
+from qubo.gates import H, X, Measure
+
+qc = QuantumCircuit(2)
+qc.add_gate(H(0))
+qc.add_gate(X(1))
+qc.add_gate(Measure(0))
+```
+
+## Improvements included
+
+- Package exports in `qubo/__init__.py`
+- `DensityMatrixSimulator` support added
+- GUI now supports `Statevector` and `Density Matrix` mode
+- GUI noise strength control added
+- Probability visualization corrected for measured results
+- Packaging metadata and install/run documentation added
+
+## Notes
+
+- The current simulator is designed for small-to-medium circuits with educational and developer workflows in mind.
+- GPU acceleration, ML integration, and advanced IDE features are future directions.
+
+## License
+
+- MIT

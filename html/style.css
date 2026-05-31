@@ -1,0 +1,633 @@
+body {
+  margin: 0;
+  font-family: Inter, 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,0.03), transparent 8%),
+              radial-gradient(1000px 500px at 90% 90%, rgba(20,10,40,0.18), transparent 18%),
+              linear-gradient(180deg,#0b0710 0%, #151025 100%);
+  color: #efeaff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+.vscode {
+  display: flex;
+  height: 100vh;
+}
+.left-rail {
+  width: 72px;
+  background: linear-gradient(180deg,#241232,#1a0b2a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.left-rail .rail-icons{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.left-rail .icon{
+  background: transparent;
+  border: none;
+  color: #e9dbff;
+  font-size: 18px;
+}
+
+.center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  box-sizing: border-box;
+}
+.editor-header {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding: 12px 16px;
+  border-radius: 10px 10px 6px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+.editor-header .title{
+  font-weight: 700;
+}
+.tabs-row .file-tab{
+  background: transparent;
+  color: #e6d6ff;
+  border: none;
+  padding: 6px 10px;
+  border-bottom: 2px solid transparent;
+}
+.file-tab.active{
+  border-bottom-color: #ffcc66;
+}
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.list li {
+  padding: 8px 10px;
+  margin: 6px 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 8px;
+  cursor: pointer;
+  color: #e6d6ff;
+  font-family: monospace;
+  font-size: 13px;
+}
+.list li:hover {
+  background: rgba(255,255,255,0.04);
+}
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  backdrop-filter: blur(4px);
+}
+.toolbar .left button {
+  margin-right: 8px;
+}
+.editor-area {
+  flex: 1;
+  margin-top: 12px;
+  min-height: 360px;
+}
+/* make CodeMirror fill the area */
+.CodeMirror {
+  height: 100%;
+  border-radius: 10px;
+  overflow: auto;
+}
+textarea#editor {
+  display: none;
+}
+.right-column {
+  width: 360px;
+  padding: 18px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.preview {
+  background: linear-gradient(180deg,#29153a,#1b0a2b);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.preview-header{
+  padding: 8px 12px;
+  color: #f3eaff;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+  font-weight: 600;
+}
+.preview-body{
+  padding: 12px;
+  color: #f0e9ff;
+  font-family: monospace;
+  font-size: 13px;
+  height: 100%;
+  overflow: auto;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+}
+.preview.top-preview{
+  flex: 1;
+}
+.preview.bottom-preview{
+  height: 180px;
+}
+
+.footer-status{
+  height: 40px;
+  margin-top: 12px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(255,255,255,0.02));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 8px;
+}
+.status-left{
+  color: #d9c8ff;
+}
+.status-right{
+  color: #d9c8ff;
+}
+
+/* previous UI layout: left gate list + editor + bottom panels */
+.app-grid{
+  display: grid;
+  grid-template-columns: 240px 1fr 360px;
+  grid-template-rows: auto 1fr 220px;
+  height: 100vh;
+}
+.left-pane{
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  background: rgba(0,0,0,0.06);
+  padding: 12px;
+  box-sizing: border-box;
+}
+.center-pane{
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+}
+.bottom-panel{
+  grid-column: 1 / span 2;
+  grid-row: 3;
+  background: rgba(0,0,0,0.04);
+  padding: 12px;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(255,255,255,0.02);
+}
+.left-gates{
+  list-style: none;
+  padding: 8px;
+  margin: 0;
+}
+.left-gates li{
+  padding: 8px;
+  color: #dcd6ff;
+  cursor: pointer;
+}
+.circuit-preview{
+  grid-column: 1;
+  grid-row: 3;
+  padding: 12px;
+  color: #cfc8ff;
+  font-size: 12px;
+}
+
+/* New IDE layout */
+.ide-root {
+  display: flex;
+  height: 100vh;
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI';
+  padding: 20px;
+  box-sizing: border-box;
+  gap: 20px;
+  align-items: stretch;
+}
+.left-side {
+  width: 220px;
+  padding: 18px;
+  box-sizing: border-box;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.06);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 10px 30px rgba(6,4,12,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
+  color: #efeaff;
+}
+.left-side .left-title{
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #fff;
+}
+.left-gates li{
+  padding: 10px 8px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 6px 14px rgba(6,4,12,0.45);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.left-gates li:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px rgba(6,4,12,0.6);
+  background: rgba(255,255,255,0.035);
+}
+
+/* Main content area glass surface */
+.main-area{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.topbar{
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  box-sizing: border-box;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: 0 12px 40px rgba(6,4,12,0.48);
+}
+.topbar .top-left{
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Run button with glossy accent and rounded pill */
+.run{
+  background: linear-gradient(180deg,#8b4be0 0%, #6410c2 60%);
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 30px rgba(99,17,150,0.28), inset 0 -6px 12px rgba(255,255,255,0.06);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.run:active{
+  transform: translateY(1px);
+}
+
+/* Work area layout — editor panel as prominent glass card */
+.work-area{
+  display: flex;
+  flex: 1;
+  gap: 18px;
+  align-items: stretch;
+}
+.editor-column{
+  flex: 1;
+  border-radius: 14px;
+  padding: 12px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: 0 18px 60px rgba(6,4,12,0.6);
+}
+
+/* CodeMirror appearance: slightly darker inner area with glassy border */
+.editor-column .CodeMirror{
+  height: calc(100% - 6px);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(10,6,20,0.5), rgba(6,4,12,0.65));
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 8px 30px rgba(0,0,0,0.6);
+}
+
+/* Right panels glass */
+.right-side{
+  width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.right-panels{ display: flex; flex-direction: column; gap: 12px; }
+.rpanel{
+  border-radius: 12px;
+  padding: 12px;
+  min-height: 160px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 10px 34px rgba(6,4,12,0.5);
+}
+.rtab{
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: transparent;
+  color: #f7ecff;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.rtab.active{
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* Bottom panels with soft glass */
+.bottom-area{
+  border-radius: 12px;
+  padding: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(6,4,12,0.45);
+}
+.panel{
+  background: transparent;
+}
+.panel.active{
+  display: block;
+}
+
+/* Buttons throughout get a frosted, glossy treatment */
+button{
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.06);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 18px rgba(6,4,12,0.45), inset 0 -4px 8px rgba(255,255,255,0.02);
+}
+button:hover{
+  transform: translateY(-2px);
+}
+
+input, select{
+  background: rgba(255,255,255,0.02);
+  color: #f3eaff;
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+pre{
+  background: linear-gradient(180deg, rgba(6,4,12,0.55), rgba(6,4,12,0.65));
+  color: #f1eaff;
+  padding: 12px;
+  border-radius: 10px;
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Terminal style refined */
+#terminal_out{
+  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(8,4,12,0.6));
+  color: #dcd6ff;
+  padding: 12px;
+  height: 160px;
+  overflow: auto;
+  border-radius: 8px;
+}
+
+/* Small preview and widgets get glass emboss */
+.small-preview{
+  padding: 8px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.45);
+}
+
+/* subtle focus outlines for accessibility */
+:focus{
+  outline: 2px solid rgba(139,75,224,0.18);
+  outline-offset: 2px;
+}
+
+/* Decorative background shapes (liquid accents) */
+.bg-shapes{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  transition: opacity .35s ease;
+}
+
+/* Ensure app content is above the decorative artwork */
+.ide-root{ position: relative; z-index: 1; }
+
+/* Make the topbar the stacking context for mac controls */
+.topbar{ position: relative; }
+
+/* macOS traffic-light controls (close/min/max) */
+.mac-controls{ position: absolute; left: 14px; top: 50%; transform: translateY(-50%); display:flex; gap:8px; align-items:center; z-index:2 }
+.mac-btn{ width: 14px; height:14px; border-radius:50%; display:inline-block; box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 6px 14px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.06); cursor: pointer }
+.mac-close{ background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), rgba(255,255,255,0.04)), linear-gradient(180deg,#ff5f57,#e0463a); }
+.mac-min{ background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), rgba(255,255,255,0.04)), linear-gradient(180deg,#ffbd2e,#cca324); }
+.mac-max{ background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), rgba(255,255,255,0.04)), linear-gradient(180deg,#2aca4a,#15892a); }
+
+/* Keyboard focus and hover states */
+.mac-btn:focus{ outline: 2px solid rgba(139,75,224,0.22); outline-offset: 2px; box-shadow: 0 6px 18px rgba(99,17,150,0.12) }
+.mac-btn:hover{ transform: translateY(-1px); box-shadow: 0 10px 28px rgba(0,0,0,0.5) }
+
+/* Mac control interaction visuals and window state styles */
+.mac-btn{ transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease; }
+
+/* state when user 'closes' the IDE (simulated) */
+.hidden-by-mac-close{ opacity: 0; transform: scale(.98); pointer-events: none; transition: opacity .25s ease, transform .25s ease; }
+
+/* minimized main-area (collapse to topbar) */
+.main-area.minimized{ height: 56px; overflow: hidden; transition: height .22s ease; }
+
+/* fullscreen simulation: stretch the app to cover viewport and boost blur */
+.fullscreen-mode .ide-root{
+  position: fixed;
+  inset: 18px;
+  margin: 0;
+  padding: 26px;
+  border-radius: 14px;
+  z-index: 9999;
+  box-shadow: 0 40px 120px rgba(6,4,12,0.8);
+}
+.fullscreen-mode .left-side, .fullscreen-mode .editor-column, .fullscreen-mode .right-side{
+  -webkit-backdrop-filter: blur(26px) saturate(160%);
+  backdrop-filter: blur(26px) saturate(160%);
+}
+
+/* Slightly increase glass highlight to emphasize Tahoe look */
+.left-side, .editor-column, .rpanel, .bottom-area{ border-color: rgba(255,255,255,0.08) }
+
+/* Make the SVG accents more visible when hovering topbar */
+.topbar:hover ~ .bg-shapes{ opacity: 0.18 }
+
+/* improve contrast for CodeMirror caret and selection */
+.CodeMirror-focused .CodeMirror-cursor{ border-left: 2px solid #ffd86b }
+.CodeMirror::selection{ background: rgba(139,75,224,0.14) }
+
+/* Hide decorative artwork on small screens or when reduced motion requested */
+@media (max-width:900px){
+  .bg-shapes{ display:none; }
+  .mac-controls{ left: 8px }
+}
+@media (prefers-reduced-motion: reduce){
+  .bg-shapes{ opacity: 0.06 !important; transition: none !important }
+}
+
+/* responsiveness preserved */
+@media(max-width:900px){
+  .left-side{
+    display: none;
+  }
+  .ide-root{
+    flex-direction: column;
+    padding: 12px;
+  }
+  .editor-column{
+    order: 1;
+  }
+  .right-side{
+    order: 2;
+    width: 100%;
+  }
+}
+
+/* Hide mac traffic-light styles since controls removed */
+.mac-controls, .mac-btn{ display: none !important; }
+
+/* Make the right-side wider and terminal panel larger like VS Code */
+.right-side{ width: 520px; }
+.right-panels{ display: flex; flex-direction: column; gap: 12px; }
+.rpanel{ min-height: 160px; }
+
+/* Make terminal rpanel take more space and look like an integrated terminal */
+#panel-terminal{ flex: 1 1 auto; min-height: 340px; display: flex; flex-direction: column; }
+#panel-terminal #terminal_out{ flex: 1 1 auto; height: auto; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size: 13px; line-height:1.4; white-space: pre-wrap; word-break: break-word; padding: 14px; }
+
+/* Make terminal full-width when bottom area active (optional toggle) */
+.panel-terminal-expanded{ grid-column: 1 / span 3; }
+
+/* Allow resizing the terminal area vertically via drag handle */
+.terminal-resize-handle{ height:8px; cursor: ns-resize; background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:4px; margin:6px 0 }
+
+/* reduce opacity of background shapes to avoid clutter with larger terminal */
+.bg-shapes{ opacity: 0.08 }
+
+:root { --glass-bg: rgba(255,255,255,0.06); --glass-stroke: rgba(255,255,255,0.12); --glass-shadow: 0 8px 30px rgba(3,7,18,0.6); }
+
+/* Layered glass card pattern (cards used for grouped controls) */
+.card {
+  position: relative;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid var(--glass-stroke);
+  overflow: hidden;
+  transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+.card:hover{ transform: translateY(-6px); box-shadow: 0 26px 70px rgba(3,7,18,0.7); }
+.card::before { /* inner soft highlight */ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); pointer-events:none; }
+.card::after { /* glossy rim */ content:""; position:absolute; left:10%; right:10%; top:6%; height:24%; background: radial-gradient(ellipse at top, rgba(255,255,255,0.06), transparent); mix-blend-mode:screen; pointer-events:none; }
+
+/* Animated background layer (large soft gradients) */
+.bg-anim {
+  position:fixed; inset:0; z-index:-2;
+  background: radial-gradient( circle at 10% 20%, rgba(90,140,210,0.18), transparent 8%),
+              radial-gradient( circle at 80% 70%, rgba(200,100,220,0.12), transparent 12%);
+  animation: bgShift 18s linear infinite;
+  filter: blur(14px) saturate(120%);
+}
+@keyframes bgShift { 0%{background-position:0% 0%}50%{background-position:20% 10%}100%{background-position:0% 0%} }
+
+/* Cursor-follow light (reflective highlight) */
+.cursor-light {
+  position:fixed;
+  width:420px;height:420px;
+  border-radius:50%; pointer-events:none;
+  mix-blend-mode:overlay; filter:blur(60px);
+  opacity:0.14; transition:transform .12s linear, opacity .25s ease, width .25s ease, height .25s ease;
+  z-index:0;
+}
+
+/* Pill-style range slider for Shots control */
+#shots_input{ -webkit-appearance:none; appearance:none; height:12px; background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border-radius:999px; outline:none; padding:0; width:160px }
+#shots_input::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; background: linear-gradient(180deg,#ffd86b,#ffb86b); border-radius:50%; box-shadow: 0 6px 18px rgba(0,0,0,0.45); border:1px solid rgba(255,255,255,0.06); }
+#shots_input::-moz-range-thumb{ width:18px; height:18px; background:#ffd86b; border-radius:50%; border: none }
+
+/* Accessibility: respect reduced motion for animated background and hover lifts */
+@media (prefers-reduced-motion: reduce){
+  .bg-anim{ animation: none !important; }
+  .card, .left-gates li{ transition: none !important; }
+}
+
+/* Light theme override (basic) */
+/* Replace empty rule with a subtle light-theme adjustment */
+.light-theme .ide-root { background: linear-gradient(180deg, #f7f7fb, #eef1f7); }
+.light-theme .left-side, .light-theme .editor-column, .light-theme .rpanel, .light-theme .bottom-area{
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  color: #0b0710;
+  border-color: rgba(0,0,0,0.06);
+}
+
+/* Terminal container for xterm.js */
+.xterm-container{ width:100%; height:100%; border-radius:8px; overflow:hidden; }
+
+/* Card group layout for the left side groups */
+.group-cards{ display:grid; grid-template-columns: repeat(1, 1fr); gap:10px; margin-top:12px }
+.group-cards .card{ padding:12px }
+
+/* Small responsive tweaks */
+@media (max-width:900px){
+  .cursor-light{ display:none }
+  .bg-anim{ display:none }
+}
+
+/* End of added glass UI enhancements */
+
+/* Icon button in topbar */
+.icon-btn{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04); padding:8px; border-radius:10px; color:#efeaff; margin-left:8px }
+.icon-btn i{ font-size:14px }
+
+/* Settings overlay panel */
+.settings-panel{ position: fixed; inset: 0; display:flex; align-items:center; justify-content:center; z-index:999; pointer-events:none; opacity:0; transition: opacity .18s ease }
+.settings-panel[aria-hidden="false"]{ pointer-events:auto; opacity:1 }
+.settings-card{ width:360px; max-width:92%; padding:14px; box-sizing:border-box }
+.settings-card h3{ margin:0 0 8px 0 }
+.setting-row{ padding:8px 0; display:flex; align-items:center; justify-content:space-between }
+.settings-actions{ display:flex; justify-content:flex-end; margin-top:12px }
+
+/* Ensure settings panel does not occupy layout or show any faint box unless explicitly visible */
+.settings-panel[aria-hidden="true"], .settings-panel:not([aria-hidden]){ display: none !important; pointer-events: none !important; opacity: 0 !important }
+
+/* Make terminal render above decorative shapes and below any overlays */
+#panel-terminal{ position: relative; z-index: 2 }
+.xterm-container, #terminal_out{ z-index: 2 }
+
+/* Reserve high z-index for assistant overlay when implemented */
+.assistant-panel{ position: fixed; inset: 12vh 12vw; z-index: 1001; display:none }
+.assistant-panel[aria-hidden="false"]{ display:block }

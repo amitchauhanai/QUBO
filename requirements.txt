@@ -1,0 +1,25 @@
+numpy
+matplotlib
+pytest
+click
+PyQt5
+fastapi
+uvicorn[standard]
+requests
+websockets
+opt_einsum
+cotengra
+# Optional (install if you plan to use JAX backend locally):
+# jax
+# jaxlib
+
+# Optional ML/DL dependencies for QUBO-copilot and model-driven workflows:
+# Install one or more of these if you plan to integrate with deep learning frameworks
+# For PyTorch (recommended for many workflows):
+# torch
+# torchvision
+# For TensorFlow:
+# tensorflow
+# For JAX (GPU/TPU acceleration):
+# jax
+# jaxlib

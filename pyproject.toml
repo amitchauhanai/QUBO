@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=65.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qubo"
+version = "0.1.0"
+description = "Lightweight quantum development toolkit for Python developers."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.0",
+    "matplotlib",
+    "PyQt5",
+    "click",
+]
+
+[project.scripts]
+qubo = "qubo.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+cache_dir = "/private/tmp/qubo-pytest-cache"

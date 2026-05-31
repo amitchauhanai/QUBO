@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "qubo/service.py", "use": "@vercel/python", "config": { "maxLambdaSize": "50mb" } },
+    { "src": "html/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/static/(.*)", "dest": "/html/$1" },
+    { "src": "/(.*)", "dest": "/qubo/service.py" }
+  ]
+}

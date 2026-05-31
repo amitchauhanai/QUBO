@@ -1,0 +1,4 @@
+export GEMINI_API_KEY=AIzaSyBllaZzY_Sb7jqTfJree1P-qtKD4wzaZaU >>~/.zshenv source ~/.zshenv
+echo GEMINI_API_KEY=AIzaSyBllaZzY_Sb7jqTfJree1P-qtKD4wzaZaU echo .env
+export GEMINI_API_KEY=AIzaSyBllaZzY_Sb7jqTfJree1P-qtKD4wzaZaU >>~/.zshenv source ~/.zshenv
+echo GEMINI_API_KEY=AIzaSyBllaZzY_Sb7jqTfJree1P-qtKD4wzaZaU echo .env

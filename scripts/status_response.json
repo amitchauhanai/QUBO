@@ -1,0 +1,6 @@
+﻿{
+    "jax_backend":  false,
+    "density_backend":  true,
+    "fastapi_installed":  true,
+    "opt_einsum":  true
+}
